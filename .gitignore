@@ -1,0 +1,5 @@
+.terraform
+terraform*
+.infracost
+env.tfvar
+*tfvar

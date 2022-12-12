@@ -1,0 +1,63 @@
+pipeline{
+    agent any 
+   tools {
+       terraform 'terraform'
+    }
+    stages {
+        stage('Git checkout') {
+           steps{
+  git 'https://github.com/munir94/jk-tfm'
+           }
+        }
+    stages {
+    
+        stage('Terraform Init'){
+            
+            steps {
+                withCredentials([azureServicePrincipal(credentialsId: 'Jenkins01',
+                subscriptionIdVariable: 'SUBS_ID',
+                clientIdVariable: 'CLIENT_ID',
+                clientSecretVariable: 'CLIENT_SECRET',
+                tenantIdVariable: 'TENANT_ID')]) {
+                sh 'az login --service-principal -u $CLIENT_ID -p $CLIENT_SECRET -t $TENANT_ID'
+                sh 'az account set -s $AZURE_SUBSCRIPTION_ID'
+                sh 'terraform init'
+                                           }
+                           }
+                    }
+             }
+        
+
+        stage('Terraform Validate'){
+            
+            steps {
+                withCredentials([azureServicePrincipal(credentialsId: 'Jenkins01',
+                subscriptionIdVariable: 'SUBS_ID',
+                clientIdVariable: 'CLIENT_ID',
+                clientSecretVariable: 'CLIENT_SECRET',
+                tenantIdVariable: 'TENANT_ID')]) {
+                
+                sh 'terraform validate '
+                                           }
+                           }
+                    }
+             
+
+        stage('Terraform Plan'){
+            steps {
+
+           sh 'terraform plan'
+                }
+            }
+        
+    
+
+        stage('Terraform Apply'){
+            steps {
+                sh 'terraform apply --auto-approve'
+            }
+        }
+    }
+}
+
+    

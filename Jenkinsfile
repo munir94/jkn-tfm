@@ -1,110 +1,54 @@
-pipeline{
-    agent any 
-    tools {
-        terraform 'terraform'
+// # Set the Azure Service Principal credentials
+// environment {
+//   ARM_CLIENT_ID = "<SPN-Client-ID>"
+//   ARM_CLIENT_SECRET = "<SPN-Client-Secret>"
+//   ARM_SUBSCRIPTION_ID = "<Azure-Subscription-ID>"
+//   ARM_TENANT_ID = "<Azure-Tenant-ID>"
+// }
+
+# Install the Azure Terraform plugin
+pipeline {
+  agent any
+  environment {
+    ARM_CLIENT_ID = credentials('Jenkins')['ARM_CLIENT_ID']
+    ARM_CLIENT_SECRET = credentials('Jenkins')['ARM_CLIENT_SECRET']
+    ARM_SUBSCRIPTION_ID = credentials('Jenkins')['ARM_SUBS_ID']
+    ARM_TENANT_ID = credentials('Jenkins')['ARM_TENANT_ID']
+    ARM_ACCESS_KEY= credentials('access_key')['ARM_ACCESS_KEY']
+  }
+  stages {
+    stage('Install Azure Terraform Plugin') {
+      steps {
+        sh 'az login --service-principal -u $CLIENT_ID -p $CLIENT_SECRET -t $TENANT_ID'
+        sh 'az account set -s $AZURE_SUBSCRIPTION_ID' 
+        sh 'terraform init'
+      }
     }
-    // environment {
-    //     TF_HOME = tool('terraform')
-    //     TF_IN_AUTOMATION = "true"
-    //     PATH = "$TF_HOME:$PATH"
-    // }
-    stages {
-    
-        stage('Terraform Init'){
-            
-            steps {
-                    ansiColor('xterm') {
-                    withCredentials([azureServicePrincipal(
-                    credentialsId: 'Jenkins',
-                    subscriptionIdVariable: 'ARM_SUBSCRIPTION_ID',
-                    clientIdVariable: 'ARM_CLIENT_ID',
-                    clientSecretVariable: 'ARM_CLIENT_SECRET',
-                    tenantIdVariable: 'ARM_TENANT_ID'
-                ), string(credentialsId: 'access_key', variable: 'ARM_ACCESS_KEY')]) {
-                        
-                        sh """
-                        sh 'az login --service-principal -u $CLIENT_ID -p $CLIENT_SECRET -t $TENANT_ID'
-                        sh 'az account set -s $AZURE_SUBSCRIPTION_ID'      
-                        echo "Initialising Terraform"
-                        terraform init -backend-config="access_key=$ARM_ACCESS_KEY"
-                        """
-                           }
-                    }
-             }
-        }
+  }
+}
 
-        stage('Terraform Validate'){
-            
-            steps {
-                    ansiColor('xterm') {
-                    withCredentials([azureServicePrincipal(
-                    credentialsId: 'Jenkins',
-                    subscriptionIdVariable: 'ARM_SUBSCRIPTION_ID',
-                    clientIdVariable: 'ARM_CLIENT_ID',
-                    clientSecretVariable: 'ARM_CLIENT_SECRET',
-                    tenantIdVariable: 'ARM_TENANT_ID'
-                ), string(credentialsId: 'access_key', variable: 'ARM_ACCESS_KEY')]) {
-                        
-                        sh """
-                                
-                        terraform validate
-                        """
-                           }
-                    }
-             }
-        }
-
-        stage('Terraform Plan'){
-            steps {
-
-                    ansiColor('xterm') {
-                    withCredentials([azureServicePrincipal(
-                    credentialsId: 'Jenkins',
-                    subscriptionIdVariable: 'ARM_SUBSCRIPTION_ID',
-                    clientIdVariable: 'ARM_CLIENT_ID',
-                    clientSecretVariable: 'ARM_CLIENT_SECRET',
-                    tenantIdVariable: 'ARM_TENANT_ID'
-                ), string(credentialsId: 'access_key', variable: 'ARM_ACCESS_KEY')]) {
-                        
-                        sh """
-                        
-                        echo "Creating Terraform Plan"
-                        terraform plan -var "client_id=$ARM_CLIENT_ID" -var "client_secret=$ARM_CLIENT_SECRET" -var "subscription_id=$ARM_SUBSCRIPTION_ID" -var "tenant_id=$ARM_TENANT_ID"
-                        """
-                        }
-                }
-            }
-        }
-
-        stage('Waiting for Approval'){
-            steps {
-                timeout(time: 10, unit: 'MINUTES') {
-                    input (message: "Deploy the infrastructure?")
-                }
-            }
-        
-        }
-    
-
-        stage('Terraform Apply'){
-            steps {
-                    ansiColor('xterm') {
-                    withCredentials([azureServicePrincipal(
-                    credentialsId: 'Jenkins',
-                    subscriptionIdVariable: 'ARM_SUBSCRIPTION_ID',
-                    clientIdVariable: 'ARM_CLIENT_ID',
-                    clientSecretVariable: 'ARM_CLIENT_SECRET',
-                    tenantIdVariable: 'ARM_TENANT_ID'
-                ), string(credentialsId: 'access_key', variable: 'ARM_ACCESS_KEY')]) {
-
-                        sh """
-                        echo "Applying the plan"
-                        terraform apply -auto-approve -var "client_id=$ARM_CLIENT_ID" -var "client_secret=$ARM_CLIENT_SECRET" -var "subscription_id=$ARM_SUBSCRIPTION_ID" -var "tenant_id=$ARM_TENANT_ID"
-                        """
-                                }
-                }
-            }
-        }
-
+# Run Terraform plan
+pipeline {
+  agent any
+  stages {
+    stage('Run Terraform Plan') {
+      steps {
+       // sh 'terraform plan -var '
+       sh 'terraform plan -var "client_id=$ARM_CLIENT_ID" -var "client_secret=$ARM_CLIENT_SECRET" -var "subscription_id=$ARM_SUBSCRIPTION_ID" -var "tenant_id=$ARM_TENANT_ID"'
+      }
     }
+  }
+}
+
+# Apply Terraform changes
+pipeline {
+  agent any
+  stages {
+    stage('Apply Terraform Changes') {
+      steps {
+        //sh 'terraform apply -auto-approve' 
+        sh 'terraform plan -var "client_id=$ARM_CLIENT_ID" -var "client_secret=$ARM_CLIENT_SECRET" -var "subscription_id=$ARM_SUBSCRIPTION_ID" -var "tenant_id=$ARM_TENANT_ID" --auto-approve '
+      }
+    }
+  }
 }

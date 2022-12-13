@@ -19,8 +19,8 @@ pipeline {
   stages {
     stage('Install Azure Terraform Plugin') {
       steps {
-        sh 'az login --service-principal -u $CLIENT_ID -p $CLIENT_SECRET -t $TENANT_ID'
-        sh 'az account set -s $AZURE_SUBSCRIPTION_ID' 
+        sh 'az login --service-principal -u $ARM_CLIENT_ID -p $ARM_CLIENT_SECRET -t $ARM_TENANT_ID'
+        sh 'az account set -s $ARM_SUBSCRIPTION_ID' 
         sh 'terraform init'
       }
     }

@@ -7,14 +7,14 @@ terraform {
     }
 }
 
-terraform {
-    backend "azurerm" {
-        resource_group_name     =   "DEV-STOR-RG"
-        storage_account_name    =   "diagandtestsav2dev"
-        container_name          =   "tfm"
-        key                     =   var.ARM_ACCESS_KEY
-    }
-}
+# terraform {
+#     backend "azurerm" {
+#         resource_group_name     =   "DEV-STOR-RG"
+#         storage_account_name    =   "diagandtestsav2dev"
+#         container_name          =   "tfm"
+#         key                     =   var.ARM_ACCESS_KEY
+#     }
+# }
 # Provider Block
 
 provider "azurerm" {

@@ -9,6 +9,9 @@
 # Install the Azure Terraform plugin
 pipeline {
   agent any
+  tools {
+       terraform 'terraform'
+    }
   environment {
     ARM_CLIENT_ID = credentials('Jenkins')['ARM_CLIENT_ID']
     ARM_CLIENT_SECRET = credentials('Jenkins')['ARM_CLIENT_SECRET']
@@ -30,6 +33,9 @@ pipeline {
 # Run Terraform plan
 pipeline {
   agent any
+  tools {
+       terraform 'terraform'
+    }
   stages {
     stage('Run Terraform Plan') {
       steps {
@@ -43,6 +49,9 @@ pipeline {
 # Apply Terraform changes
 pipeline {
   agent any
+  tools {
+       terraform 'terraform'
+    }
   stages {
     stage('Apply Terraform Changes') {
       steps {

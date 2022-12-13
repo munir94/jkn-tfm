@@ -3,6 +3,8 @@
        sh '''
           az login --service-principal -u $AZURE_CLIENT_ID -p $AZURE_CLIENT_SECRET -t $AZURE_TENANT_ID
           az account set -s $AZURE_SUBSCRIPTION_ID
+
+          azureCLI commands: [[exportVariablesString: '', script: 'az group create -n MyResourceGroup --location northeurope'], [exportVariablesString: '/publicIpAddress|PUBLIC_IP', script: 'az vm create -n MyLinuxVM -g MyResourceGroup --image UbuntuLTS --data-disk-sizes-gb 10 20']], principalCredentialId: '<credential_id>
 */
 
 
@@ -30,10 +32,11 @@ pipeline{
                     tenantIdVariable: 'ARM_TENANT_ID'
                               ), 
                 string(credentialsId: 'access_key', variable: 'ARM_ACCESS_KEY')]) {
-                sh '''      
+                /*s '''     
                 az login --service-principal -u $ARM_CLIENT_ID -p $ARM_CLIENT_SECRET -t ARM__TENANT_ID
                 az account set -s $AZURE_SUBSCRIPTION_ID
-                '''
+                ''' */
+                azureCLI commands: [[exportVariablesString: '', script: az login --service-principal -u $ARM_CLIENT_ID -p $ARM_CLIENT_SECRET -t ARM__TENANT_ID && az account set -s $AZURE_SUBSCRIPTION_ID]]
                            }
                     }
              }

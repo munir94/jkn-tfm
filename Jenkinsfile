@@ -24,7 +24,7 @@ pipeline{
             
                  steps {
     
-    withCredentials([azureServicePrincipal(credentialsId: 'credentials_id',
+    withCredentials([azureServicePrincipal(credentialsId: 'Jenkins',
                                     subscriptionIdVariable: 'SUBS_ID',
                                     clientIdVariable: 'CLIENT_ID',
                                     clientSecretVariable: 'CLIENT_SECRET',
@@ -40,7 +40,7 @@ pipeline{
             
                          steps {
     
-    withCredentials([azureServicePrincipal(credentialsId: 'credentials_id',
+    withCredentials([azureServicePrincipal(credentialsId: 'Jenkins',
                                     subscriptionIdVariable: 'SUBS_ID',
                                     clientIdVariable: 'CLIENT_ID',
                                     clientSecretVariable: 'CLIENT_SECRET',
@@ -54,7 +54,7 @@ pipeline{
         stage('Terraform Plan'){
                           steps {
     
-    withCredentials([azureServicePrincipal(credentialsId: 'credentials_id',
+    withCredentials([azureServicePrincipal(credentialsId: 'Jenkins',
                                     subscriptionIdVariable: 'SUBS_ID',
                                     clientIdVariable: 'CLIENT_ID',
                                     clientSecretVariable: 'CLIENT_SECRET',
@@ -79,7 +79,7 @@ pipeline{
         stage('Terraform Apply'){
                                   steps {
     
-    withCredentials([azureServicePrincipal(credentialsId: 'credentials_id',
+    withCredentials([azureServicePrincipal(credentialsId: 'Jenkins',
                                     subscriptionIdVariable: 'SUBS_ID',
                                     clientIdVariable: 'CLIENT_ID',
                                     clientSecretVariable: 'CLIENT_SECRET',

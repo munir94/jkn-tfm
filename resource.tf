@@ -19,7 +19,7 @@ module "rg-jenkin" {
  }
 #CALL Windows VM  MODULE
 module "winvm-jenkin" {
-  source = "./modules/compute/winvm"
+  source = "./modules/compute/WinVM"
   vmname = "JKTFMVM"
   subnet_id = module.vnet-jenkin.vnet_subnets.0
 //refer to output from rg

@@ -19,7 +19,7 @@ variable "tenant_id" {
     description =   "Tenant ID"
     type        =   string
 }
-# variable "ARM_ACCESS_KEY" {
-#     description =   "ARM_ACCESS_KEY"
-#     type        =   string
-# }
+variable "ARM_ACCESS_KEY" {
+    description =   "ARM_ACCESS_KEY"
+    type        =   string
+}

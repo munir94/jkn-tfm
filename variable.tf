@@ -23,7 +23,4 @@ variable "tenant_id" {
 #     description =   "ARM_ACCESS_KEY"
 #     type        =   string
 # }
-variable "access_key" {
-    description =   "ARM_ACCESS_KEY"
-    type        =   string
-}
+

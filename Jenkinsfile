@@ -28,8 +28,8 @@ pipeline{
                                     subscriptionIdVariable: 'SUBS_ID',
                                     clientIdVariable: 'CLIENT_ID',
                                     clientSecretVariable: 'CLIENT_SECRET',
-                                    tenantIdVariable: 'TENANT_ID')],
-                 [string(credentialsId: 'access_key', variable: 'ARM_ACCESS_KEY')]) {
+                                    tenantIdVariable: 'TENANT_ID'),
+                 string(credentialsId: 'access_key', variable: 'ARM_ACCESS_KEY')]) {
     sh 'az login --service-principal -u $CLIENT_ID -p $CLIENT_SECRET -t $TENANT_ID'
     sh 'az account set --subscription $SUBS_ID'
     sh 'terraform init --backend-config="access_key=$ARM_ACCESS_KEY'

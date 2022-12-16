@@ -12,7 +12,7 @@ terraform {
         resource_group_name     =   "DEV-STOR-RG"
         storage_account_name    =   "diagandtestsav2dev"
         container_name          =   "tfm"
-        key                     =   var.ARM_ACCESS_KEY
+        key                     =   var.access_key
     }
 }
 # Provider Block

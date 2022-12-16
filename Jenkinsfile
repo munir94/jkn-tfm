@@ -13,11 +13,11 @@ pipeline{
     tools {
         "org.jenkinsci.plugins.terraform.TerraformInstallation" "terraform"
     }
-    // environment {
-    //     TF_HOME = tool('terraform')
-    //     TF_IN_AUTOMATION = "true"
-    //     PATH = "$TF_HOME:$PATH"
-    // }
+    environment {
+        TF_HOME = tool('terraform')
+        TF_IN_AUTOMATION = "true"
+        PATH = "$TF_HOME:$PATH"
+    }
     stages {
     
         stage('Terraform Init'){
@@ -28,8 +28,7 @@ pipeline{
                                     subscriptionIdVariable: 'SUBS_ID',
                                     clientIdVariable: 'CLIENT_ID',
                                     clientSecretVariable: 'CLIENT_SECRET',
-                                    tenantIdVariable: 'TENANT_ID')
-                 ]) {
+                                    tenantIdVariable: 'TENANT_ID')]) {
     sh 'az login --service-principal -u $CLIENT_ID -p $CLIENT_SECRET -t $TENANT_ID'
     sh 'az account set --subscription $SUBS_ID'
     sh 'terraform init '

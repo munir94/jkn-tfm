@@ -21,6 +21,10 @@ pipeline{
     //     TF_IN_AUTOMATION = "true"
     //     PATH = "$TF_HOME:$PATH"
     // }
+
+     environment {
+        FOO = "bar"
+    }
     stages {
     
         stage('Terraform Init'){

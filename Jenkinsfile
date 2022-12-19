@@ -61,7 +61,7 @@ pipeline{
                                     tenantIdVariable: 'TENANT_ID')]) {
   
     sh 'terraform plan -var "client_id=$CLIENT_ID" -var "client_secret=$CLIENT_SECRET" -var "subscription_id=$SUBS_ID" -var "tenant_id=$TENANT_ID"'
-    sh 'terraform plan'
+    //sh 'terraform plan'
 }
 }
         }

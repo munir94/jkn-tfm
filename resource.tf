@@ -1,7 +1,7 @@
 module "rg-jenkin" {
     source = "./modules/rg"
     rgname = "jenkin"
-    region = "eastus"
+    region = "southeastasia"
 }
 
 #CALL VNET MODULE

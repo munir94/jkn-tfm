@@ -10,7 +10,7 @@
 
 pipeline{
     //agent any 
-    agent {label 'ecs-api'}
+    agent {label 'win16'}
     tools {
        // "org.jenkinsci.plugins.terraform.TerraformInstallation" "terraform"
        terraform "terraform"

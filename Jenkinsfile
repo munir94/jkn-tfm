@@ -12,13 +12,15 @@ pipeline{
     //agent any 
     agent {label 'ecs-api'}
     tools {
-        "org.jenkinsci.plugins.terraform.TerraformInstallation" "terraform"
+       // "org.jenkinsci.plugins.terraform.TerraformInstallation" "terraform"
+       terraform "terraform"
     }
-    environment {
-        TF_HOME = tool('terraform')
-        TF_IN_AUTOMATION = "true"
-        PATH = "$TF_HOME:$PATH"
-    }
+    
+    // environment {
+    //     TF_HOME = tool('terraform')
+    //     TF_IN_AUTOMATION = "true"
+    //     PATH = "$TF_HOME:$PATH"
+    // }
     stages {
     
         stage('Terraform Init'){

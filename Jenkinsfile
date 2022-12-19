@@ -60,7 +60,7 @@ pipeline{
                                     clientSecretVariable: 'CLIENT_SECRET',
                                     tenantIdVariable: 'TENANT_ID')]) {
   
-    //sh 'terraform plan -var "client_id=$CLIENT_ID" -var "client_secret=$CLIENT_SECRET" -var "subscription_id=$SUBS_ID" -var "tenant_id=$TENANT_ID"'
+    sh 'terraform plan -var "client_id=$CLIENT_ID" -var "client_secret=$CLIENT_SECRET" -var "subscription_id=$SUBS_ID" -var "tenant_id=$TENANT_ID"'
     sh 'terraform plan'
 }
 }
@@ -85,8 +85,8 @@ pipeline{
                                     clientSecretVariable: 'CLIENT_SECRET',
                                     tenantIdVariable: 'TENANT_ID')]) {
   
-    //sh 'terraform apply -var "client_id=$CLIENT_ID" -var "client_secret=$CLIENT_SECRET" -var "subscription_id=$SUBS_ID" -var "tenant_id=$TENANT_ID" --auto-approve'
-    sh 'terraform apply'
+    sh 'terraform apply -var "client_id=$CLIENT_ID" -var "client_secret=$CLIENT_SECRET" -var "subscription_id=$SUBS_ID" -var "tenant_id=$TENANT_ID" --auto-approve'
+    //sh 'terraform apply'
 }
 }
         }

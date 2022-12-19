@@ -9,7 +9,8 @@
 
 
 pipeline{
-    agent any 
+    //agent any 
+    agent {label 'ecs-api'}
     tools {
         "org.jenkinsci.plugins.terraform.TerraformInstallation" "terraform"
     }

@@ -10,21 +10,18 @@
 
 pipeline{
     //agent any 
-    agent {label 'win16'}
+    agent {label 'master'}
     tools {
        // "org.jenkinsci.plugins.terraform.TerraformInstallation" "terraform"
        terraform "terraform"
     }
-    
-    // environment {
-    //     TF_HOME = tool('terraform')
-    //     TF_IN_AUTOMATION = "true"
-    //     PATH = "$TF_HOME:$PATH"
-    // }
-
-     environment {
-        FOO = "bar"
+    environment {
+        TF_HOME = tool('terraform')
+        TF_IN_AUTOMATION = "true"
+        PATH = "$TF_HOME:$PATH"
     }
+
+
     stages {
     
         stage('Terraform Init'){

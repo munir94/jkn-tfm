@@ -1,6 +1,6 @@
 /*
  withCredentials([usernamePassword(credentialsId: '<service_princial>', passwordVariable: 'AZURE_CLIENT_SECRET', usernameVariable: 'AZURE_CLIENT_ID')]) {
-       bat '''
+       sh '''
           az login --service-principal -u $AZURE_CLIENT_ID -p $AZURE_CLIENT_SECRET -t $AZURE_TENANT_ID
           az account set -s $AZURE_SUBSCRIPTION_ID
 
@@ -10,7 +10,7 @@
 
 pipeline{
     //agent any 
-    agent {label 'win16'}
+    agent {label 'master'}
     tools {
        // "org.jenkinsci.plugins.terraform.TerraformInstallation" "terraform"
        terraform "terraform"
@@ -33,9 +33,9 @@ pipeline{
                                     clientIdVariable: 'CLIENT_ID',
                                     clientSecretVariable: 'CLIENT_SECRET',
                                     tenantIdVariable: 'TENANT_ID')]) {
-    bat 'az login --service-principal -u $CLIENT_ID -p $CLIENT_SECRET -t $TENANT_ID'
-    bat 'az account set --subscription $SUBS_ID'
-    bat 'terraform init -var "client_id=$CLIENT_ID" -var "client_secret=$CLIENT_SECRET" -var "subscription_id=$SUBS_ID" -var "tenant_id=$TENANT_ID" '
+    sh 'az login --service-principal -u $CLIENT_ID -p $CLIENT_SECRET -t $TENANT_ID'
+    sh 'az account set --subscription $SUBS_ID'
+    sh 'terraform init -var "client_id=$CLIENT_ID" -var "client_secret=$CLIENT_SECRET" -var "subscription_id=$SUBS_ID" -var "tenant_id=$TENANT_ID" '
 }
 }
         }
@@ -50,7 +50,7 @@ pipeline{
                                     clientSecretVariable: 'CLIENT_SECRET',
                                     tenantIdVariable: 'TENANT_ID')]) {
    
-    bat 'terraform validate'
+    sh 'terraform validate'
 }
 }
         }
@@ -64,8 +64,8 @@ pipeline{
                                     clientSecretVariable: 'CLIENT_SECRET',
                                     tenantIdVariable: 'TENANT_ID')]) {
   
-    bat 'terraform plan -var "client_id=$CLIENT_ID" -var "client_secret=$CLIENT_SECRET" -var "subscription_id=$SUBS_ID" -var "tenant_id=$TENANT_ID"'
-    //bat 'terraform plan'
+    sh 'terraform plan -var "client_id=$CLIENT_ID" -var "client_secret=$CLIENT_SECRET" -var "subscription_id=$SUBS_ID" -var "tenant_id=$TENANT_ID"'
+    //sh 'terraform plan'
 }
 }
         }
@@ -89,8 +89,8 @@ pipeline{
                                     clientSecretVariable: 'CLIENT_SECRET',
                                     tenantIdVariable: 'TENANT_ID')]) {
   
-    bat 'terraform apply -var "client_id=$CLIENT_ID" -var "client_secret=$CLIENT_SECRET" -var "subscription_id=$SUBS_ID" -var "tenant_id=$TENANT_ID" --auto-approve'
-    //bat 'terraform apply'
+    sh 'terraform apply -var "client_id=$CLIENT_ID" -var "client_secret=$CLIENT_SECRET" -var "subscription_id=$SUBS_ID" -var "tenant_id=$TENANT_ID" --auto-approve'
+    //sh 'terraform apply'
 }
 }
         }
